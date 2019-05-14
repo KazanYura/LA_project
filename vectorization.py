@@ -3,6 +3,7 @@ import os
 from PIL import Image
 import numpy as np
 import scipy.misc as smp
+
 train_imgs = np.loadtxt("Output.txt")
 
 
@@ -99,7 +100,7 @@ def sharping_image(med_vectors):
     for vector in med_vectors:
         edited_vector = []
         for j in med_vectors[vector]:
-            if j > max(med_vectors[vector])*0.85:
+            if j > max(med_vectors[vector]) * 0.65:
                 edited_vector.append(1)
             else:
                 edited_vector.append(0)
@@ -113,4 +114,21 @@ files = []
 for r, d, f in os.walk(path):
     for file in f:
         files.append(os.path.join(r, file))
+for iom in med:
+    ima = []
+    line = []
+    k = 0
+    for i in med[iom]:
+        if i == 1:
+            line.append([0, 0, 0])
+        else:
+            line.append([255, 255, 255])
+        k += 1
+        if k % 28 == 0:
+            ima.append(line)
+            line = []
 
+    a = smp.toimage(ima)
+    print(iom)
+    a.resize((200, 200), Image.ANTIALIAS)
+    a.save(str(int(iom)) + ".png")
